@@ -1,6 +1,4 @@
 # GUT-Check
-Timestamp: 2026-01-25 01:03
-This output is Ref24
 
 GUT-Check is a structured evaluation framework for assessing nutrition, supplement, food, and health-adjacent claims using transparent, auditable criteria. It is designed to enforce disciplined reasoning in domains distorted by marketing, influencer amplification, and overconfident summaries.
 
@@ -50,7 +48,16 @@ At a high level:
 • Evaluation logic applies rubric-based criteria
 • Outputs are scored results with explanatory metadata
 
+Research Awareness module:
+* Where the code lives (you’ll add paths later)
+* What endpoints/commands exist (even if stubbed)
+* What schemas are involved (exact filenames)
+* What is and is not downloaded automatically
+
 The framework is designed so that evaluation rules can evolve independently of any specific claim source.
+---
+## Compliance Note
+GUT-Check only auto-downloads open-access PDFs; paywalled items are returned as citations with access options.
 ---
 ## Project Status
 This repository is under active development.
@@ -67,7 +74,7 @@ The authoritative design and governance specification for GUT-Check is maintaine
 See:
 docs/gut-check-spec-v0.2.pdf
 
-In the event of conflict between this README and the specification document, the specification document takes precedence.
+In the event of conflict between this README and the Product Specification document, the specification document takes precedence.
 ---
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
