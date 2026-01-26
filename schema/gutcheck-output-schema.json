@@ -1,0 +1,229 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GUT-Check Analysis Response",
+  "description": "Structured output for evidence-based claim analysis",
+  "type": "object",
+  "required": [
+    "claim_summary",
+    "evidence_inventory",
+    "assumptions_and_gaps",
+    "risk_assessment",
+    "confidence_statement",
+    "decision_utility",
+    "next_questions"
+  ],
+  "properties": {
+    "claim_summary": {
+      "type": "object",
+      "description": "Reformulated claim in testable terms",
+      "required": ["original_claim", "analytical_reframe", "scope_notes"],
+      "properties": {
+        "original_claim": {
+          "type": "string",
+          "description": "The claim as stated by the user"
+        },
+        "analytical_reframe": {
+          "type": "string",
+          "description": "Claim restated in falsifiable, bounded terms"
+        },
+        "scope_notes": {
+          "type": "array",
+          "description": "What is/isn't being evaluated",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "evidence_inventory": {
+      "type": "array",
+      "description": "Graded sources supporting or refuting the claim",
+      "items": {
+        "type": "object",
+        "required": ["source_type", "grade", "finding", "limitations"],
+        "properties": {
+          "source_type": {
+            "type": "string",
+            "description": "Category of evidence source",
+            "examples": ["peer-reviewed study", "meta-analysis", "regulatory guidance", "industry report", "influencer content"]
+          },
+          "grade": {
+            "type": "string",
+            "enum": ["A", "B", "C", "D"],
+            "description": "Evidence quality grade per README rubric"
+          },
+          "finding": {
+            "type": "string",
+            "description": "What this source says about the claim"
+          },
+          "limitations": {
+            "type": "array",
+            "description": "Known constraints on applicability",
+            "items": {"type": "string"}
+          },
+          "citation": {
+            "type": "string",
+            "description": "Full citation or URL (optional but preferred)"
+          }
+        }
+      }
+    },
+    "assumptions_and_gaps": {
+      "type": "object",
+      "description": "Explicit unknowns and conditions",
+      "required": ["key_assumptions", "evidence_gaps", "context_dependencies"],
+      "properties": {
+        "key_assumptions": {
+          "type": "array",
+          "description": "What must be true for this analysis to hold",
+          "items": {"type": "string"}
+        },
+        "evidence_gaps": {
+          "type": "array",
+          "description": "Missing studies or data that would improve certainty",
+          "items": {"type": "string"}
+        },
+        "context_dependencies": {
+          "type": "array",
+          "description": "Factors that could change the answer",
+          "items": {
+            "type": "object",
+            "properties": {
+              "factor": {"type": "string"},
+              "impact": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "risk_assessment": {
+      "type": "object",
+      "description": "Safety and risk framing",
+      "required": ["safety_grade", "known_risks", "risk_conditions"],
+      "properties": {
+        "safety_grade": {
+          "type": "string",
+          "enum": ["generally_recognized_safe", "conditional_safety", "documented_risks", "insufficient_data", "contraindicated"],
+          "description": "Overall safety classification"
+        },
+        "known_risks": {
+          "type": "array",
+          "description": "Documented adverse effects or interactions",
+          "items": {"type": "string"}
+        },
+        "risk_conditions": {
+          "type": "array",
+          "description": "Populations or contexts where caution applies",
+          "items": {"type": "string"}
+        },
+        "regulatory_status": {
+          "type": "string",
+          "description": "FDA/regulatory classification if relevant"
+        }
+      }
+    },
+    "confidence_statement": {
+      "type": "object",
+      "description": "Bounded certainty levels",
+      "required": ["overall_confidence", "confidence_basis", "certainty_range"],
+      "properties": {
+        "overall_confidence": {
+          "type": "string",
+          "enum": ["high", "moderate", "low", "very_low"],
+          "description": "Confidence in the analysis given available evidence"
+        },
+        "confidence_basis": {
+          "type": "string",
+          "description": "Why this confidence level (in plain language)"
+        },
+        "certainty_range": {
+          "type": "string",
+          "description": "What we can/cannot say with current evidence"
+        },
+        "highest_evidence_grade": {
+          "type": "string",
+          "enum": ["A", "B", "C", "D"],
+          "description": "Best evidence grade found"
+        }
+      }
+    },
+    "decision_utility": {
+      "type": "object",
+      "description": "Practical guidance without overstepping scope",
+      "required": ["key_takeaway", "considerations", "red_flags"],
+      "properties": {
+        "key_takeaway": {
+          "type": "string",
+          "description": "Primary decision-relevant insight"
+        },
+        "considerations": {
+          "type": "array",
+          "description": "Factors to weigh in decision-making",
+          "items": {"type": "string"}
+        },
+        "red_flags": {
+          "type": "array",
+          "description": "Warning signs in marketing or claims",
+          "items": {"type": "string"}
+        },
+        "alternative_frames": {
+          "type": "array",
+          "description": "Other ways to think about the question",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "next_questions": {
+      "type": "array",
+      "description": "0-2 progressive context questions (max)",
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["question", "justification", "optional"],
+        "properties": {
+          "question": {
+            "type": "string",
+            "description": "The question being asked"
+          },
+          "justification": {
+            "type": "string",
+            "description": "Plain-language reason why this improves the analysis"
+          },
+          "optional": {
+            "type": "boolean",
+            "const": true,
+            "description": "All questions must be optional per README"
+          },
+          "question_type": {
+            "type": "string",
+            "enum": ["age_range", "sex", "location", "source", "motivation", "use_status", "other"],
+            "description": "Category of context being collected"
+          },
+          "response_options": {
+            "type": "array",
+            "description": "Predefined options if applicable",
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Analysis metadata",
+      "properties": {
+        "analysis_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "evidence_search_depth": {
+          "type": "string",
+          "enum": ["shallow", "standard", "deep"],
+          "description": "How thorough the evidence search was"
+        },
+        "context_used": {
+          "type": "array",
+          "description": "What context was available for this analysis",
+          "items": {"type": "string"}
+        }
+      }
+    }
+  }
+}
