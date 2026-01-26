@@ -1,0 +1,195 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GUT-Check Research Awareness Module",
+  "description": "Research discovery, OA resolution, and document ingestion metadata",
+  "type": "object",
+
+  "definitions": {
+    "ResearchAwareness": {
+      "type": "object",
+      "required": ["enabled", "query_text", "settings"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "query_text": { "type": "string" },
+
+        "settings": {
+          "type": "object",
+          "required": ["download_oa_pdfs", "max_ranked"],
+          "properties": {
+            "download_oa_pdfs": { "type": "boolean" },
+            "max_ranked": { "type": "integer", "minimum": 1 },
+            "dedupe_by_doi": { "type": "boolean", "default": true },
+            "allow_abstract_only": { "type": "boolean", "default": true },
+            "oa_resolver": {
+              "type": "string",
+              "enum": ["unpaywall", "other"]
+            }
+          }
+        },
+
+        "works": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/WorkRecord" },
+          "default": []
+        },
+
+        "library": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/LibraryDocument" },
+          "default": []
+        },
+
+        "run": {
+          "$ref": "#/definitions/Run"
+        },
+
+        "sources_used": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["openalex", "semanticscholar", "crossref", "manual", "other"]
+          }
+        }
+      }
+    },
+
+    "WorkRecord": {
+      "type": "object",
+      "required": ["id", "source", "title", "availability_state"],
+      "properties": {
+        "id": { "type": "string" },
+        "source": {
+          "type": "string",
+          "enum": ["openalex", "semanticscholar", "crossref", "manual", "other"]
+        },
+        "title": { "type": "string" },
+        "year": { "type": "integer" },
+        "doi": { "type": "string" },
+        "landing_url": { "type": "string" },
+        "abstract": { "type": "string" },
+
+        "relevance_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+
+        "availability_state": {
+          "type": "string",
+          "enum": [
+            "OA_PDF_AVAILABLE",
+            "OA_NO_DIRECT_PDF",
+            "PAYWALLED_OR_UNKNOWN"
+          ]
+        },
+
+        "availability": {
+          "$ref": "#/definitions/Availability"
+        }
+      },
+
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "availability_state": { "const": "OA_PDF_AVAILABLE" }
+            },
+            "required": ["availability_state"]
+          },
+          "then": {
+            "properties": {
+              "availability": {
+                "type": "object",
+                "required": ["url_for_pdf"],
+                "properties": {
+                  "url_for_pdf": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "availability": {
+                "type": "object",
+                "not": {
+                  "required": ["url_for_pdf"]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+
+    "Availability": {
+      "type": "object",
+      "properties": {
+        "is_oa": { "type": "boolean" },
+        "url_for_pdf": { "type": "string" },
+        "best_oa_url": { "type": "string" },
+        "license": { "type": "string" },
+        "host_type": { "type": "string" },
+
+        "access_options": {
+          "type": "object",
+          "properties": {
+            "publisher_url": { "type": "string" },
+            "upload_pdf_prompt": { "type": "boolean" },
+            "institution_prompt": { "type": "boolean" }
+          }
+        }
+      }
+    },
+
+    "LibraryDocument": {
+      "type": "object",
+      "required": ["doc_id", "source", "text_indexed"],
+      "properties": {
+        "doc_id": { "type": "string" },
+        "source": {
+          "type": "string",
+          "enum": ["user_upload", "oa_download", "import", "other"]
+        },
+        "ingested_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "text_indexed": { "type": "boolean" },
+        "title": { "type": "string" },
+        "doi": { "type": "string" },
+        "work_id": { "type": "string" }
+      }
+    },
+
+    "Run": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["not_run", "running", "complete", "partial", "failed"]
+        },
+        "errors": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "finished_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "cache_used": { "type": "boolean" },
+        "abstract_only_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of works where full text was not available for retrieval"
+        }
+      }
+    }
+  }
+}
