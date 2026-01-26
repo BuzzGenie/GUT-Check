@@ -1,11 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "GUT-Check Research Awareness Module",
-  "description": "Research discovery, OA resolution, and document ingestion metadata",
+  "description": "The ResearchAwareness module records how external research sources were discovered, evaluated, and incorporated into a GUT-Check output. It tracks research queries, discovery settings, ranked works, open-access availability, and user- or system-ingested documents. The module explicitly distinguishes between open-access PDFs, abstract-only sources, and paywalled or unavailable works, and enforces gating rules to prevent unauthorized or unsupported document retrieval. This metadata supports transparency, auditability, and governance without providing diagnosis or treatment.",
   "type": "object",
 
   "definitions": {
     "ResearchAwareness": {
+      "description": "Research discovery, OA resolution, and document ingestion metadata",
       "type": "object",
       "required": ["enabled", "query_text", "settings"],
       "properties": {
