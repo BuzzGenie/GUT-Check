@@ -59,6 +59,40 @@ The framework is designed so that evaluation rules can evolve independently of a
 ## Compliance Note
 GUT-Check only auto-downloads open-access PDFs; paywalled items are returned as citations with access options.
 ---
+## AI Assistance and Provenance
+
+This repository may use AI tools to assist with drafting, reviewing, or refactoring code and specifications. All changes are ideally reviewed and committed by a human. Git commit history remains the authoritative source of accountability.
+
+To improve transparency and traceability, files shall include a x_provenance object documenting human authorship and any AI assistance used during creation or modification. This metadata is informational only and does not affect runtime behavior, validation, or execution.
+
+Applying this uniformly across all code avoids ambiguity and prevents “special cases” creep.
+
+The x_provenance block records:
+* the human responsible for review and commit
+* which AI system assisted (if any)
+* the role the AI played (e.g., drafting, review, refactor)
+* whether the content was reviewed by a human
+* optional notes describing the division of labor
+* a creation timestamp for traceability
+
+Canonical x_provenance template (use consistently):
+"x_provenance": {
+  "human_author": "Anna Stockel",
+  "ai_assistance": {
+    "system": "Claude.ai" or "Open.ai",
+    "model_family": "opus 4.5" or "ChatGPT 5.2",
+    "role": "(insert role, i.e., schema drafting" or "code review" etc)"
+  },
+  "reviewed_by_human": true or false,
+  "notes": "(AI did X; human did Y.)",
+  "created_utc": "(insert timestamp)"
+}
+
+Usage Guidance:
+* This block shall appear in any code or specification file where AI assistance was used.
+* reviewed_by_human shall be true for committed production code.
+* AI systems are never considered authors or accountable actors; the committing human remains responsible.
+
 ## Project Status
 This repository is under active development.
 Initial focus areas include:
