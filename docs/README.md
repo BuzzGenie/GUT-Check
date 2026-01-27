@@ -61,9 +61,16 @@ GUT-Check only auto-downloads open-access PDFs; paywalled items are returned as 
 ---
 ## Project Policies
 
-“Single Source of Truth” rule:
+1) “Single Source of Truth” rule:
 Project policies must have exactly one canonical home here in README.
 Other files may link to the canonical policy, but must not restate it verbatim. The only exception is templates, such as the Canonical x_provenance template, intended to be copied into other places.
+2) Read every file in /docs for updates before starting to code.
+    A) Always read the README file first.
+---
+## Human and AI Guardrails
+
+1) In every AI instruction block (or prompt), add:
+    A) Before generating or modifying any Schema, read the existing schema files and match its declared $schema dialect exactly. Do not upgrade drafts unless explicitly instructed.
 ---
 ## AI Assistance and Provenance
 
