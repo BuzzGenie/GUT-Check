@@ -48,7 +48,7 @@ At a high level:
 • Evaluation logic applies rubric-based criteria
 • Outputs are scored results with explanatory metadata
 
-Research Awareness module:
+Research Awareness Module:
 * Where the code lives (you’ll add paths later)
 * What endpoints/commands exist (even if stubbed)
 * What schemas are involved (exact filenames)
@@ -58,6 +58,12 @@ The framework is designed so that evaluation rules can evolve independently of a
 ---
 ## Compliance Note
 GUT-Check only auto-downloads open-access PDFs; paywalled items are returned as citations with access options.
+---
+## Project Policies
+
+“Single Source of Truth” rule:
+Project policies must have exactly one canonical home here in README.
+Other files may link to the canonical policy, but must not restate it verbatim. The only exception is templates, such as the Canonical x_provenance template, intended to be copied into other places.
 ---
 ## AI Assistance and Provenance
 
