@@ -26,6 +26,9 @@
     "next_questions"
   ],
   "properties": {
+   "research_awareness": {
+     "$ref": "./research_awareness.json#/definitions/ResearchAwareness"
+   },
     "claim_summary": {
       "type": "object",
       "description": "Reformulated claim in testable terms",
