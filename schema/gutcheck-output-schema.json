@@ -2,6 +2,19 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "GUT-Check Analysis Response",
   "description": "Structured output for evidence-based claim analysis",
+
+  "x_provenance": {
+    "human_author": "Anna Stockel",
+    "ai_assistance": {
+      "system": "Claude.ai",
+      "model_family": "opus 4.5",
+      "role": "schema drafting"
+    },
+    "reviewed_by_human": true,
+    "notes": "AI drafted initial output schema; human reviewed structure, required fields, and Draft-07 compliance.",
+    "created_utc": "2026-01-26T10:38:00Z"
+  },
+
   "type": "object",
   "required": [
     "claim_summary",
